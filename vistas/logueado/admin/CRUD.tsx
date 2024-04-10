@@ -94,7 +94,7 @@ function Invitado ({ route }) {
                 apellidos: apellidos
             };
             console.log(updateData);
-            const response = axios.put(`http://192.168.8.100:3005/api/users/${correo}`, updateData)
+            const response = axios.put(`https://zennit-api.onrender.com/api/users/${correo}`, updateData)
                 .then(response => {
                     setMensaje(response.data.message);
                     setTimeout(() => {
@@ -114,7 +114,7 @@ function Invitado ({ route }) {
         }
     };
     const borrar = async () => {
-            const response = axios.delete(`http://192.168.8.100:3005/api/users/${correo}`)
+            const response = axios.delete(`https://zennit-api.onrender.com/api/users/${correo}`)
                 .then(response => {
                     setMensaje(response.data.message);
                     setTimeout(() => {

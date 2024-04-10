@@ -52,7 +52,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
             };
 
             axios
-                .post('http://192.168.8.100:3005/api/auth/login', userData)
+                .post('https://zennit-api.onrender.com/api/auth/login', userData)
                 .then((response) => {
                     setMensaje('Respuesta del servidor: ' + response.data.message);
                     logueado(response.data.logueado, response.data.correo, response.data.nombre, response.data.apellidos, response.data.genero, response.data.fn, response.data.rol, response.data.foto);

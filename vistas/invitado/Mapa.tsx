@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Button, TouchableOpacity, Platform, ScrollView, Text, Image } from 'react-native';
-import MapView, { Marker, Circle } from 'react-native-maps';
+import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps'; // Importa PROVIDER_GOOGLE
 import Geolocation from '@react-native-community/geolocation';
 import IconoMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icono from 'react-native-vector-icons/Ionicons';
-
 
 const App = () => {
     const [currentLocation, setCurrentLocation] = useState(null);
@@ -51,20 +50,19 @@ const App = () => {
         }
     };
 
-
-
-
     return (
         <View style={{ flex: 1 }}>
             <MapView
                 ref={mapRef}
-                style={{ flex: 1, height: '60%',marginTop: 0 }}
+                style={{ flex: 1, height: '60%', marginTop: 0 }}
                 initialRegion={{
                     latitude: currentLocation ? currentLocation.latitude : 19.3399521,
                     longitude: currentLocation ? currentLocation.longitude : -99.4756845,
                     latitudeDelta: 0.02,
                     longitudeDelta: 0.02,
                 }}
+                // Establece PROVIDER_GOOGLE en Android
+                provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : null}
             >
                 {currentLocation && (
                     <Circle
@@ -88,15 +86,15 @@ const App = () => {
                 </TouchableOpacity>
             </View>
             <View>
-                <ScrollView style={{height: '40%'}}>
+                <ScrollView style={{ height: '40%' }}>
                     <View>
-                        <Text style={{fontWeight: 'bold', fontSize: 35, margin: 10}}>Bancos:</Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', gap: 15, paddingHorizontal: 10, width: '100%'}}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 35, margin: 10 }}>Bancos:</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, paddingHorizontal: 10, width: '100%' }}>
                             <View>
-                                <Image style={{height: 100, width: 100}} source={require('../../public/imagenes/Panel.png')} />
+                                <Image style={{ height: 100, width: 100 }} source={require('../../public/imagenes/Panel.png')} />
                             </View>
                             <TouchableOpacity onPress={handleCenterMapToPin}>
-                                <Text style={{fontWeight: 'bold', color: 'green'}}>Nombre</Text>
+                                <Text style={{ fontWeight: 'bold', color: 'green' }}>Nombre</Text>
                                 <Text style={{ fontSize: 16, width: '80%' }}>Proyecto</Text>
                                 <Text style={{ fontWeight: 'bold', color: 'green' }}>Ubicacion</Text>
                                 <Text style={{ fontSize: 16, width: '80%' }}>Universidad Tecnológica del Valle de Toluca</Text>

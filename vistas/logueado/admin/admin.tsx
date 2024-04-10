@@ -16,18 +16,20 @@ const UserList: React.FC<UserProps> = ({ navigation }) => {
 
     useEffect(() => {
         fetchUsers();
+        const interval = setInterval(fetchUsers, 500); // Consulta cada 5 segundos
+
     }, [actualizar]);
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://192.168.8.100:3005/api/users');
+            const response = await axios.get('https://zennit-api.onrender.com/api/users');
             setUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
     };
     const borrar = async ( correos: string ) => {
-        const response = axios.delete(`http://192.168.8.100:3005/api/users/${correos}`)
+        const response = axios.delete(`https://zennit-api.onrender.com/api/users/${correos}`)
             .catch(error => {
                 console.log("Errores: " + error.response.data.message);
             })
@@ -44,13 +46,13 @@ const UserList: React.FC<UserProps> = ({ navigation }) => {
     return (
         <View style={styles.contenedor}>
         <View>
-            <Text style={{textAlign: 'center', fontSize: 45, fontWeight: 'bold', paddingBottom: 15}}>Usuarios</Text>
+            <Text style={{textAlign: 'center', fontSize: 45, fontWeight: 'bold', marginBottom: 10}}>Usuarios</Text>
         </View>
         <ScrollView
-        bounces= {false}
-        >
-
+        bounces= {true} 
+        ><View style={{borderTopWidth: 1}}>
             {users.map(user => (
+                
                 <View style={styles.contenedorUser} key={user._id} >
                     <View style={styles.imagenContenedor}>
                         <Image style={styles.imagen} source={require('../../../public/imagenes/Inicio.png')} />
@@ -70,6 +72,7 @@ const UserList: React.FC<UserProps> = ({ navigation }) => {
                     </View>
                 </View>
             ))}
+            </View>
             </ScrollView>
         </View>
     );
@@ -80,8 +83,8 @@ const styles = StyleSheet.create({
     },
     imagenContenedor: {
         justifyContent: 'center',
-        width: '30%',
-        height: '60%',
+        width: 100,
+        height: 100,
         alignItems: 'center',
         shadowColor: 'black',
         shadowRadius: 10,
@@ -115,8 +118,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
-        paddingBottom: 0,
-        paddingTop: 0,
+        paddingBottom: 40,
+        paddingTop: 40,
     },
 });
 

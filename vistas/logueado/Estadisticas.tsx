@@ -9,7 +9,7 @@ const VoltageChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://192.168.8.100:3005/api/bancos/Proyecto/voltaje'); 
+                const response = await axios.get('https://zennit-api.onrender.com/api/bancos/Proyecto/voltaje'); 
                 setData(response.data);
             } catch (error) {
                 console.error('Error al obtener los datos de voltaje:', error);

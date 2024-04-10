@@ -22,6 +22,7 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
     const [mensaje, setMensaje] = useState('');
     const [disponible, setDisponible] = useState(null);
     const [correo, setCorreo] = useState('');
+    const [rol, setRol] = useState('');
     const batteryWidth = 40;
     const batteryHeight = 20;
     const borderWidth = 2;
@@ -32,10 +33,10 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
     const Usar = () => {
         const updateData = {
             usuario: correo,
-            token: tokenInput,
             disponible: false,
+            token: tokenInput,
         };
-        const response = axios.put(`http://192.168.8.100:3005/api/bancos/dejar/Proyecto`, updateData)
+        const response = axios.put(`https://zennit-api.onrender.com/api/bancos/dejar/Proyecto`, updateData)
             .then(response => {
                 setMensaje(response.data.message);
             })
@@ -49,10 +50,10 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
             disponible: true,
             token: token,
         };
-        const response = axios.put(`http://192.168.8.100:3005/api/bancos/dejar/Proyecto`, updateData)
-        .then(response => {
-            setTokenInput('');
-        })
+        const response = axios.put(`https://zennit-api.onrender.com/api/bancos/dejar/Proyecto`, updateData)
+            .then(response => {
+                setTokenInput('');
+            })
             .catch(error => {
                 console.log("Errors: " + error.response.data.message);
             });
@@ -60,7 +61,7 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://192.168.8.100:3005/api/bancos/Proyecto');
+                const response = await axios.get('https://zennit-api.onrender.com/api/bancos/Proyecto');
                 // Verifica si la respuesta es exitosa
                 if (response.status === 200) {
                     // Asigna el valor de la batería a un estado
@@ -84,12 +85,22 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                 console.error('Error fetching data:', error);
             }
         };
-        
+
         AsyncStorage.getItem('correo')
             .then((correo) => {
                 console.log('Correo recuperado de AsyncStorage:', correo);
                 if (correo != null) {
                     setCorreo(correo);
+                }
+            })
+            .catch((error: any) => {
+                console.error('Error al obtener el nombre de AsyncStorage:', error);
+            });
+        AsyncStorage.getItem('rol')
+            .then((rol) => {
+                console.log('Correo recuperado de AsyncStorage:', rol);
+                if (rol != null) {
+                    setRol(rol);
                 }
             })
             .catch((error: any) => {
@@ -110,20 +121,21 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
             <StatusBar backgroundColor="white" barStyle="dark-content" />
             <View style={{
                 width: '100%', borderTopRightRadius: 15,
-                borderTopLeftRadius: 15, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderBottomWidth: 0, borderColor: 'black'}}>
-                    <Image style={{
-                        borderWidth: 0,
-                        width: '50%', height: '40%',
-                        borderColor: 'black',
-                    }} source={require('../../public/imagenes/Panel.png')} />
-                    <Text style={styles.Titulo}>{nombre}</Text>
+                borderTopLeftRadius: 15, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderBottomWidth: 0, borderColor: 'black'
+            }}>
+                <Image style={{
+                    borderWidth: 0,
+                    width: '50%', height: '40%',
+                    borderColor: 'black',
+                }} source={require('../../public/imagenes/Panel.png')} />
+                <Text style={styles.Titulo}>{nombre}</Text>
             </View>
 
             <View style={styles.banco}>
                 <View style={{ gap: 10 }}>
-                    <View style={{  gap: 0 }}>
-                        <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: -50}}>
-                            <Text style={{color: 'black'}}>Batería:</Text>
+                    <View style={{ gap: 0 }}>
+                        <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: -50 }}>
+                            <Text style={{ color: 'black' }}>Batería:</Text>
                             <Svg width={batteryWidth} height={batteryHeight} viewBox={`0 0 ${batteryWidth} ${batteryHeight}`}>
                                 <Rect
                                     x={0}
@@ -144,7 +156,7 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-                <View style={{paddingBottom: 0}}>
+                <View style={{ paddingBottom: 0 }}>
                     <Text style={{ color: 'black' }} >Ubicación:</Text>
                     <Text style={{ color: 'black', fontSize: 18, marginBottom: 10 }}>{ubicacion}</Text>
                     {disponible == true ? (
@@ -160,20 +172,33 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                                 <TouchableOpacity style={styles.input} onPress={Usar}>
                                     <Text style={{ color: 'black', textAlign: 'center', paddingHorizontal: 10, paddingVertical: 5, fontSize: 19 }}>Usar banco</Text>
                                 </TouchableOpacity>
-                                <Text style={{textAlign: 'center', color: 'darkred'}}>{mensaje}</Text>
+                                <Text style={{ textAlign: 'center', color: 'darkred' }}>{mensaje}</Text>
                             </View>
                         </>
                     ) : (
                         <>
                             <Text style={{ color: 'darkred', fontWeight: 'bold', fontSize: 20 }}>En uso</Text>
                             {correo === usuario ? (
-                                <View style={{justifyContent: 'center', width: '100%'}}>
-                                        <Text style={{ color: 'black', fontSize: 18 }}>Token actual: <Text style={{color: 'green', fontWeight: 'bold'}}>{token}</Text></Text>
-                                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                                    <TouchableOpacity style={styles.input} onPress={DejarUsar}>
-                                        <Text style={{ color: 'black', textAlign: 'center', fontSize: 18, paddingHorizontal: 0, paddingVertical: 5 }}>Dejar de usar banco</Text>
-                                    </TouchableOpacity>
+                                <View style={{ justifyContent: 'center', width: '100%' }}>
+                                    <Text style={{ color: 'black', fontSize: 18 }}>Token actual: <Text style={{ color: 'green', fontWeight: 'bold' }}>{token}</Text></Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <TouchableOpacity style={styles.input} onPress={DejarUsar}>
+                                            <Text style={{ color: 'black', textAlign: 'center', fontSize: 18, paddingHorizontal: 0, paddingVertical: 5 }}>Dejar de usar banco</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
+                            ) : (
+                                <View></View>
+                            )}
+                            {rol == "1" && correo != usuario ? (
+                                <View style={{ justifyContent: 'center', width: '100%' }}>
+                                    <Text style={{ color: 'black', fontSize: 18 }}>Token actual: <Text style={{ color: 'green', fontWeight: 'bold' }}>{token}</Text></Text>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <Text style={{ color: 'black', textAlign: 'center', fontSize: 18, paddingHorizontal: 0, paddingVertical: 5 }}>En uso por: {usuario}</Text>
+                                        <TouchableOpacity style={styles.input} onPress={DejarUsar}>
+                                            <Text style={{ color: 'black', textAlign: 'center', fontSize: 18, paddingHorizontal: 0, paddingVertical: 5 }}>Liberar banco</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             ) : (
                                 <View></View>
@@ -181,9 +206,9 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                         </>
                     )}
 
-                <View>
+                    <View>
 
-                </View>
+                    </View>
                 </View>
             </View>
 
@@ -195,7 +220,7 @@ const styles = StyleSheet.create({
     contenedor: {
         flex: 1,
         height: '100%',
-        marginTop: Platform.OS == "ios" ? 50: 0,
+        marginTop: Platform.OS == "ios" ? 50 : 0,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -222,12 +247,12 @@ const styles = StyleSheet.create({
     input: {
         margin: 10,
         width: '50%',
-      borderWidth: 1,
-      borderRadius: 10,
-      textAlign: 'center',
-      paddingHorizontal: 5,
-      paddingVertical: 4,
-      fontSize: 25,  
+        borderWidth: 1,
+        borderRadius: 10,
+        textAlign: 'center',
+        paddingHorizontal: 5,
+        paddingVertical: 4,
+        fontSize: 25,
     },
     banco: {
         paddingHorizontal: 15,

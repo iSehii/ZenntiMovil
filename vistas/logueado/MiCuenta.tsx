@@ -164,7 +164,7 @@ const Invitado: React.FC<InvitadoProps> = ({ navigation }) => {
                 apellidos: apellidos
             };
             console.log(updateData);
-            const response = axios.put(`http://192.168.8.100:3005/api/users/${correo}`, updateData)
+            const response = axios.put(`https://zennit-api.onrender.com/api/users/${correo}`, updateData)
                 .then(response => {
                     setMensaje(response.data.message);
                     setTimeout(() => {

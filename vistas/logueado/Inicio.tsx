@@ -23,7 +23,7 @@ const InicioLogueado: React.FC<InicioProps> = ({navigation}) =>{
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://192.168.8.100:3005/api/bancos/Proyecto');
+                const response = await axios.get('https://zennit-api.onrender.com/api/bancos/Proyecto');
                 // Verifica si la respuesta es exitosa
                 if (response.status === 200) {
                     // Asigna el valor de la batería a un estado
