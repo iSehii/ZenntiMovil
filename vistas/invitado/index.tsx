@@ -15,12 +15,17 @@ const Invitado: React.FC<InvitadoProps> = ({ navigation }) => {
     const Tab = createBottomTabNavigator();
 
     const Inicio = () => (
-            <InicioGuest/>
+            <InicioGuest navigation={navigation}/>
     );
 
     const Ubicaciones = () => (
-        <View style={styles.container}>
-            <Mapa/>
+        <View style={{
+            paddingTop: Platform.OS == "android" ? 0 : 0,
+            flex: 1,
+            paddingBottom: Platform.OS == "android" ? 0 : 5,
+            flexDirection: 'column'
+        }}>
+            <Mapa />
         </View>
     );
 
@@ -43,15 +48,19 @@ const Invitado: React.FC<InvitadoProps> = ({ navigation }) => {
                 <Tab.Navigator
                     screenOptions={{
                         tabBarActiveTintColor: 'red',
-                        tabBarStyle: {
-                            height: 70, // Ajusta la altura de la pestaña
-                            paddingTop: 10,
-                            display: 'flex',
-                            borderTopWidth: 2,
-                            borderTopColor: '#ccc',
-                        },
+                        tabBarInactiveTintColor: 'gray',
+                        tabBarStyle: [
+                            {
+                                paddingTop: Platform.OS == "android" ? 0 : 15,
+                                height: Platform.OS == "android" ? '8%' : '10%',
+                                display: 'flex',
+                                borderTopWidth: 2,
+                                borderTopColor: '#ccc'
+                            },
+                        ],
                         tabBarLabelStyle: {
-                            marginTop: -50, // Ajusta la distancia entre el icono y el texto
+                            marginTop: Platform.OS == "android" ? -12 : 0, // Ajusta la distancia entre el icono y el texto
+                            paddingBottom: Platform.OS == "android" ? 10 : 0,
                         },
                     }}
                 >
@@ -74,16 +83,6 @@ const Invitado: React.FC<InvitadoProps> = ({ navigation }) => {
                                 <Ionicons name="map" color={color} size={size} />
                             ),
                         }}
-                    />
-                    <Tab.Screen
-                        name="Menú"
-                        component={Menu}
-                        options={{
-                            headerShown: false,
-                            tabBarIcon: ({ color, size }) => (
-                                <Ionicons name="menu" color={color} size={size} />
-                                ),
-                            }}
                     />
                 </Tab.Navigator>
             </View>

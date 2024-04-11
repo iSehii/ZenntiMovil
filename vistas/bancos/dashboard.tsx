@@ -159,7 +159,7 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                 <View style={{ paddingBottom: 0 }}>
                     <Text style={{ color: 'black' }} >Ubicación:</Text>
                     <Text style={{ color: 'black', fontSize: 18, marginBottom: 10 }}>{ubicacion}</Text>
-                    {disponible == true ? (
+                    {disponible == true && correo != '' ? (
                         <>
                             <Text style={{ color: 'green', fontWeight: 'bold', fontSize: 25, margin: 5 }}>Disponible</Text>
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -175,7 +175,7 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                                 <Text style={{ textAlign: 'center', color: 'darkred' }}>{mensaje}</Text>
                             </View>
                         </>
-                    ) : (
+                    ) : correo != '' ? (
                         <>
                             <Text style={{ color: 'darkred', fontWeight: 'bold', fontSize: 20 }}>En uso</Text>
                             {correo === usuario ? (
@@ -204,11 +204,28 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
                                 <View></View>
                             )}
                         </>
+                    ) : (
+                        <>
+                            <View>
+                                <Text style={{textAlign: 'center', fontSize: 25, fontWeight: 'bold', color: 'darkred'}}>No disponible como invitado.</Text>
+                                <View style={{paddingVertical: 20}}>
+                                            <View >
+                                                <TouchableOpacity style={styles.Botones} onPress={() => navigation.navigate('Iniciar sesión')}>
+                                                    <Text style={styles.textoBoton}>Iniciar sesión</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View>
+                                                <Text style={{ textAlign: 'center', color: 'gray', justifyContent: 'center', marginTop: -15, fontSize: 22 }}>__________________________</Text>
+                                            </View>
+                                            <View >
+                                                <TouchableOpacity style={styles.Botones} onPress={() => navigation.navigate('Registro')}>
+                                                    <Text style={styles.textoBoton}>Registrarse</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                </View>
+                            </View>
+                        </>
                     )}
-
-                    <View>
-
-                    </View>
                 </View>
             </View>
 
@@ -217,6 +234,21 @@ const InicioLogueado: React.FC<InicioProps> = ({ navigation }) => {
     );
 };
 const styles = StyleSheet.create({
+    Botones: {
+        borderWidth: 1,
+        marginTop: 4,
+        backgroundColor: 'black',
+        borderRadius: 12,
+        paddingVertical: 10,
+        width: '100%',
+        borderColor: 'transparent',
+    },
+    textoBoton: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: '500',
+    },
     contenedor: {
         flex: 1,
         height: '100%',
